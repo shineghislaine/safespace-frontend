@@ -1,14 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "vite"
-}
-  ],
+  "framework": "vite",
   "env": {
-    "VITE_API_URL": "https://safespace-backend.onrender.com/api"
+    "VITE_API_URL": "https://safespace-backend-3q00.onrender.com/api"
   },
   "routes": [
     { "src": "/(.*)", "dest": "/" }
