@@ -1,0 +1,128 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "../styles/Auth.css";
+
+export default function LoginRegister({ isLogin: defaultIsLogin = true }) {
+  const [isLogin, setIsLogin] = useState(defaultIsLogin);
+  const [form, setForm] = useState({ username: "", email: "", password: "" });
+  const [message, setMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+
+  const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isLogin) {
+        // --- LOGIN ---
+        const res = await axios.post(`${API_URL}/auth/login`, {
+          email: form.email,
+          password: form.password,
+        });
+
+        // Save token + user info
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        setMessage("✅ Login successful! Redirecting...");
+        setIsError(false);
+
+        // Redirect based on role
+        const redirectPath =
+          res.data.user?.role === "admin" ? "/admin" : "/chatroom";
+        setTimeout(() => navigate(redirectPath), 1000);
+      } else {
+        // --- REGISTER ---
+        await axios.post(`${API_URL}/auth/register`, form);
+        setMessage("✅ Registered successfully! Check email for verification.");
+        setIsError(false);
+        navigate("/verify", { state: { email: form.email } });
+      }
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.message || "❌ Something went wrong.";
+      setMessage(errorMsg);
+      setIsError(true);
+    }
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>{isLogin ? "Welcome Back 👋" : "Join SafeSpace ✨"}</h2>
+        <p className="subtitle">
+          {isLogin
+            ? "Login to continue your anonymous journey"
+            : "Create an account to start your SafeSpace"}
+        </p>
+
+        {/* ALERT BOX */}
+        {message && (
+          <div
+            className={`alert-box ${isError ? "error" : "success"}`}
+            role="alert"
+          >
+            {message}
+          </div>
+        )}
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          {!isLogin && (
+            <div className="form-group">
+              <label>Username</label>
+              <input
+                type="text"
+                name="username"
+                placeholder="Choose a username"
+                value={form.username}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          )}
+
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button type="submit" className="auth-btn">
+            {isLogin ? "Login" : "Register"}
+          </button>
+        </form>
+
+        <p className="switch-text">
+          {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
+          <span onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? "Register here" : "Login here"}
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+}
