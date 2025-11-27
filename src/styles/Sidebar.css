@@ -278,4 +278,12 @@
   .sidebar-toggle {
     display: block;
   }
+  .sidebar-footer {
+    padding: px 5px;
+    margin-bottom: 50px;
+  }
+  .logout-btn{
+    font-size: 12px;
+    
+  }
 }
