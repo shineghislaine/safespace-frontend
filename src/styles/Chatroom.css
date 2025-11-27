@@ -155,13 +155,14 @@
 
 .chat-input {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px;
-  border-top: 1px solid #e5e7eb;
-  background: white;
-  flex-shrink: 0;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  outline: none;
+  font-size: 16px !important; /* 🔥 Prevent mobile zoom */
+  -webkit-text-size-adjust: 100%;
 }
+
 .chat-input input {
   flex: 1;
   padding: 12px;
@@ -229,7 +230,6 @@
 
 
 /* ============= MOBILE / TABLET ============= */
-
 @media (max-width: 768px) {
   .chatroom-content {
     margin-left: 0 !important;
@@ -251,16 +251,15 @@
   }
 
   .bubble {
-    max-width: calc(100% - 60px);
-    padding: 9px 12px;
-    font-size: 14px;
+    max-width: 85%;
+    padding: 10px 14px;
+    font-size: 15px;
   }
 
   .chatroom-header {
     padding: 12px 15px;
   }
 
-  /* Sidebar toggle button */
   .sidebar-toggle {
     display: inline-block;
     position: fixed;
@@ -275,15 +274,25 @@
     cursor: pointer;
     z-index: 1100;
   }
+
+  .chat-input input {
+    padding: 12px;
+    font-size: 16px !important; /* 🔥 prevent zoom */
+  }
+
+  .chat-input button {
+    padding: 12px 14px;
+    font-size: 16px;
+  }
 }
 
 
-/* ============= EXTRA SMALL PHONES (iPhone SE, small Android) ============= */
-
+/* ============= EXTRA SMALL PHONES ============= */
 @media (max-width: 480px) {
+
   .bubble {
-    max-width: calc(100% - 50px);
-    font-size: 13px;
+    max-width: 90%;
+    font-size: 14px;
   }
 
   .avatar {
@@ -292,13 +301,12 @@
   }
 
   .chat-input input {
-    padding: 10px;
-    font-size: 14px;
+    padding: 12px;
+    font-size: 16px !important; /* 🔥 must be 16px */
   }
 
   .chat-input button {
-    padding: 10px 14px;
-    font-size: 14px;
+    padding: 12px;
+    font-size: 16px;
   }
 }
- 
