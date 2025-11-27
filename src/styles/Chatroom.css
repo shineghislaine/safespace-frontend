@@ -3,6 +3,8 @@
   min-height: 100vh;
   background: #f9fafb;
   position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
 .chatroom-content {
@@ -11,6 +13,7 @@
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
+  width: 100%;
 }
 
 .chatroom-header {
@@ -21,6 +24,7 @@
   background: white;
   border-bottom: 1px solid #e5e7eb;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }
 
 .logout-btn {
@@ -40,25 +44,29 @@
   display: flex;
   flex-direction: column;
   padding: 20px;
-  min-height: 0;     
+  min-height: 0;
+  width: 100%;
 }
 
 .messages {
-  flex: 1;          
-  min-height: 0;     
+  flex: 1;
+  min-height: 0;
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 10px;
+  overflow-y: auto;
 }
 
 
-/* Each message */
+/* ================= MESSAGE ALIGNMENT ================= */
+
 .message {
   display: flex;
   align-items: flex-end;
   gap: 10px;
+  width: 100%;
 }
 
 /* Avatar */
@@ -84,8 +92,10 @@
   position: relative;
   font-size: 14px;
   line-height: 1.4;
+  width: fit-content;
 }
 
+/* Username above bubble */
 .username {
   font-weight: 600;
   font-size: 13px;
@@ -104,30 +114,45 @@
   text-align: right;
 }
 
-/* Other messages */
+/* ================= OTHER MESSAGES (LEFT) ================= */
+
 .message.other {
-  justify-content: flex-start;
+  justify-content: flex-start !important;
+  flex-direction: row !important;
+}
+
+.message.other .avatar {
+  order: 0;
+  margin-right: 10px;
 }
 .message.other .bubble {
+  order: 1;
+  align-self: flex-start;
   background: #f3f4f6;
   color: #111827;
   border-bottom-left-radius: 4px;
+  text-align: left;
 }
 
-/* Self messages */
+/* ================= SELF MESSAGES (RIGHT) ================= */
+
 .message.self {
   justify-content: flex-end;
 }
+
 .message.self .bubble {
   background: linear-gradient(135deg, #2575fc, #6a11cb);
   color: white;
   border-bottom-right-radius: 4px;
 }
+
 .message.self .avatar {
   order: 2;
 }
 
-/* Chat input */
+
+/* ================= CHAT INPUT ================= */
+
 .chat-input {
   display: flex;
   align-items: center;
@@ -135,6 +160,7 @@
   padding: 10px;
   border-top: 1px solid #e5e7eb;
   background: white;
+  flex-shrink: 0;
 }
 .chat-input input {
   flex: 1;
@@ -161,23 +187,8 @@
   background: #1d4ed8;
 }
 
-/* Overlay */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 900;
-}
 
-.typing-indicator {
-  font-size: 14px;
-  color: gray;
-  margin: 5px 15px;
-  font-style: italic;
-}
+/* ================= STATUS DOTS ================= */
 
 .status-dot {
   display: inline-block;
@@ -186,13 +197,11 @@
   border-radius: 50%;
   margin-left: 5px;
 }
-
 .status-dot.online {
-  background-color: #4caf50; /* green */
+  background-color: #4caf50;
 }
-
 .status-dot.offline {
-  background-color: #ccc; /* gray */
+  background-color: #ccc;
 }
 
 .last-seen {
@@ -210,13 +219,48 @@
 }
 
 
+/* ============= LARGE SCREENS ============= */
+
+@media (min-width: 1024px) {
+  .chatroom-content {
+    margin-left: 260px;
+  }
+}
 
 
-/* Responsive */
+/* ============= MOBILE / TABLET ============= */
+
 @media (max-width: 768px) {
   .chatroom-content {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100%;
   }
+
+  .chatroom-body {
+    padding: 12px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .chat-avatar-img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .bubble {
+    max-width: calc(100% - 60px);
+    padding: 9px 12px;
+    font-size: 14px;
+  }
+
+  .chatroom-header {
+    padding: 12px 15px;
+  }
+
+  /* Sidebar toggle button */
   .sidebar-toggle {
     display: inline-block;
     position: fixed;
@@ -225,7 +269,7 @@
     background: #2575fc;
     border: none;
     color: white;
-    font-size: 24px;
+    font-size: 20px;
     padding: 8px 12px;
     border-radius: 8px;
     cursor: pointer;
@@ -233,3 +277,27 @@
   }
 }
 
+
+/* ============= EXTRA SMALL PHONES (iPhone SE, small Android) ============= */
+
+@media (max-width: 480px) {
+  .bubble {
+    max-width: calc(100% - 50px);
+    font-size: 13px;
+  }
+
+  .avatar {
+    width: 28px;
+    height: 28px;
+  }
+
+  .chat-input input {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .chat-input button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+}
